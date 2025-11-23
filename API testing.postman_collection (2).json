@@ -1,0 +1,629 @@
+{
+	"info": {
+		"_postman_id": "7d36eec7-8436-4d3d-ac27-6d25219896fc",
+		"name": "API testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49119394",
+		"_collection_link": "https://narminhajiyevv-1699360.postman.co/workspace/nermin-haciyeva's-Workspace~f14440f9-8efa-483e-87c6-5d99066c7414/collection/49119394-7d36eec7-8436-4d3d-ac27-6d25219896fc?action=share&source=collection_link&creator=49119394"
+	},
+	"item": [
+		{
+			"name": "get token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" var responseBody = pm.response.json();\r",
+							"var accessToken=responseBody.accessToken;\r",
+							"pm.collectionVariables.set(\"accessToken\",accessToken);\r",
+							"pm.environment.set(\"accessToken\",accessToken);\r",
+							"\r",
+							"pm.test(\"Access token\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"accessToken\");\r",
+							"});\r",
+							"\r",
+							"var responseBody = pm.response.json();\r",
+							"console.log(Object.keys(responseBody));"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientName\":\"{{$randomFirstName}}\",\r\n    \"clientEmail\":\"{{$randomEmail}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base URL}}/api-clients",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"api-clients"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "check domain",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\",function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 3000ms\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"})\r",
+							"\r",
+							"pm.test(\" Response to be an object with a message property\",function(){\r",
+							"    pm.expect(pm.response.json()).to.be.an(\"object\").that.has.property(\"message\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base URL}}",
+					"host": [
+						"{{base URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Status",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is below 3000ms00ms\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Status code is 200\",function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base URL}}/status",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"status"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all books",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const response = pm.response.json();\r",
+							"var arrayLength=response.length;\r",
+							"// minimum 0, maksimum arrayLength -1\r",
+							"var randomIndex = Math.floor(Math.random()*arrayLength);\r",
+							"var bookID =response[randomIndex].id;\r",
+							"pm.collectionVariables.set(\"bookID\",bookID)\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response has at least one book\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"    pm.expect(response.length).to.be.above(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Array should contain at least one book object\",function(){\r",
+							"    const response=pm.response.json();\r",
+							"    pm.expect(response.length).to.be.above(0);\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base URL}}/books",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get a book",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body is an array\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(Array.isArray(jsonData)).to.be.true;\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base URL}}/books/:bookID",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"books",
+						":bookID"
+					],
+					"variable": [
+						{
+							"key": "bookID",
+							"value": "{{bookID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "order a book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let response = pm.response.json();\r",
+							"console.log(response);\r",
+							"pm.collectionVariables.set(\"orderId\", response.orderId);\r",
+							"pm.environment.set(\"orderId\", response.orderId);\r",
+							"\r",
+							"pm.test(\"Status code 201 olmalıdır\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Order created true olmalıdır\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.created).to.eql(true);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"orderId düzgün gəlməlidir\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.orderId).to.be.a(\"string\");\r",
+							"});\r",
+							"let json = pm.response.json();\r",
+							"pm.environment.set(\"orderId\", json.orderId);"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"function plus0ne(value){\r",
+							"  return value + 1;\r",
+							"}\r",
+							"\r",
+							"let currentBookID=Number(pm.collectionVariables.get(\"bookID\"));\r",
+							"console.log(currentBookID);\r",
+							"\r",
+							"pm.collectionVariables.set(\"bookID\",plus0ne(currentBookID));\r",
+							"console.log(plus0ne(currentBookID));"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"Narmin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base URL}}\\orders",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all orders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Order created\", function () {\r",
+							"    const response = pm.response.json();\r",
+							"\r",
+							"    pm.expect(pm.response.code).to.eql(201);\r",
+							"    pm.expect(response).to.have.property(\"created\", true);\r",
+							"    pm.expect(response).to.have.property(\"orderId\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"bookId\": 1,\r\n  \"customerName\": \"Narmin\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base URL}}\\orders",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"1000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"pm.collectionVariables.set(\"orderId\", pm.response.json().id);\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base URL}}/orders/:orderId",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"1000\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerName\":\"narmin\"\r\n}"
+				},
+				"url": {
+					"raw": "{{base URL}}/orders/:orderId",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete an order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 2000ms\",function(){\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+							"});\r",
+							"\r",
+							"if(pm.response.code === 204) {\r",
+							"    pm.test(\"Successful delete -> body boş olmalıdır\", function () {\r",
+							"        pm.expect(pm.response.text()).to.eql(\"\");\r",
+							"    });\r",
+							"}\r",
+							"\r",
+							"if (pm.response.code === 404) {\r",
+							"    pm.test(\"404 cavabı error property ilə gəlməlidir\", function () {\r",
+							"        const json = pm.response.json();\r",
+							"        pm.expect(json).to.have.property(\"error\");\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base URL}}/orders/:orderId",
+					"host": [
+						"{{base URL}}"
+					],
+					"path": [
+						"orders",
+						":orderId"
+					],
+					"variable": [
+						{
+							"key": "orderId",
+							"value": "{{orderId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base URL",
+			"value": "http:\\\\simple-books-api.click"
+		},
+		{
+			"key": "accessToken",
+			"value": "8ca37f3e71d6bdeb0237f315d3d0c733fd69c0d8eafdbe5c9001cf65f028ac80"
+		},
+		{
+			"key": "bookID",
+			"value": 5
+		},
+		{
+			"key": "orderId",
+			"value": "t5AyGusnvxfZryqDTWjzr"
+		},
+		{
+			"key": "bookId",
+			"value": ""
+		}
+	]
+}
